@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>GifTastic, part deux</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    
+    <div id="gif-view"></div>  <!-- Gifs will get dumped here -->
+    
+    <form id="gif-form">
+      <label for="gif-input">Add a Body Part</label>
+      <input type="text" id="gif-input"><br>        
+      <input id="add-body" type="submit" value="Add a Body Part">  <!-- Button triggers new gif to be added -->
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      
+      var body = ["Head", "Eyes", "Chest", "Mouth", "Nose", "Arms", "Hands", "Fingers", "Heart", "Lungs", "Stomach", "Liver", "Belly Button", "Legs", "Bones", "Arteries", "Vessels", "Knees", "Feet", "Ankles"];
+
+      function renderButtons() {
+          $("#body-view").empty();
+          for (var i = 0; i < body.length; i++){
+              var a = $("<button>");
+              a.addClass ("bodyGif");
+              a.attr ("data-name", body [i]);
+              a.text(body[i]);
+              $("#gif-view").append(a);
+            }
+      }
+
+      $("#add-body").on("click", function(event) {      // This function handles events where one button is clicked
+        event.preventDefault();        // event.preventDefault() prevents the form from trying to submit itself.// We're using a form so that the user can hit enter instead of clicking the button if they want
+        var bodies = $("#gif-input").val().trim();      // This line will grab the text from the input box
+        body.push(bodies);         // The movie from the textbox is then added to our array
+        renderButtons();         // calling renderButtons which handles the processing of our movie array
+      });
+      
+       renderButtons();        // Calling the renderButtons function at least once to display the initial list of movies
+
+       function buttonDisplay (){
+            $('body').on('click', '.bodyGif', function(){
+            var buttonVal = $(this).text();
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonVal + "&api_key=dc6zaTOxFJmzC&limit=10";
+              console.log(queryURL);
+            $.ajax({
+                url: queryURL, 
+                method: "GET" 
+            }).then(function(response){
+              // debugger;  
+                console.log('the response is', response.data);
+                // response.data is an array of 10 GIFs
+                // we want to loop through this array and for each item in the array, create an <img src="sourceurl">
+
+                //loop through response.data array
+                for(var i=0; i < response.data.length; i++){
+                    var gifImage = $("<img>");    
+
+                    //give each image a src attribute, equal to the url property of the item we are currently looping on
+                    gifImage.attr('src', response.data[i].images.fixed_height.url);
+                    $('#gif-view').append(gifImage);
+                    //append to gif div
+                }   
+
+
+                //renderButtons();
+            });
+            })
+            
+        }
+        buttonDisplay();
+        
+    </script>
+  </div>
+</body>
+
+</html>
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Body Buttons</title>
+</head>     
+
+<body>
+  <button data-body="head">head</button><data-still="https://media1.giphy.com/media/" data-animate="https://media1.giphy.com/media/" data-state="still" class="gif" id="class">
+  <button data-body="eyes">eyes</button>
+  <button data-body="chest">chest</button>
+  <button data-body="mouth">mouth</button>
+  <button data-body="nose">nose</button>
+  <button data-body="arms">arms</button>
+  <button data-body="hands">hands</button>
+  <button data-body="fingers">fingers</button>
+  <button data-body="heart">heart</button>
+  <button data-body="lungs">lungs</button>
+  <button data-body="stomach">stomach</button>
+  <button data-body="liver">liver</button>
+  <button data-body="bellybutton">belly button</button>
+  <button data-body="legs">legs</button>
+  <button data-body="bones">bones</button>
+  <button data-body="arteries">arteries</button>
+  <button data-body="vessels">vessels</button>
+  <button data-body="knees">knees</button>  
+  <button data-body="feet">feet</button>
+  <button data-body="ankles">ankles</button>
+
+  <form id="Bodies">
+    <label for="bodies"></label>     
+    <input type="text" id-"body-input"><br>
+    <input id="add-part" type="submit" value="add a body part">    
+</form>
+
+  <div id="gifs-appear-here">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    // Adding click event listen listener to all buttons
+    $("button").on("click", function() {
+      // Grabbing and storing the data-animal property value from the button
+      var body= $(this).attr("data-body");
+      var state = $(this).attr("data-state");
+
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+
+      // Constructing a queryURL using the animal name
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        body + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // After data comes back from the request
+        .then(function(response) {
+          console.log(queryURL);
+
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
+
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
+
+            // Creating and storing a div tag
+            var bodyDiv = $("<div>");
+
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            // Creating and storing an image tag
+            var bodyImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            bodyImage.attr("src", results[i].images.fixed_height.url);
+
+            // Appending the paragraph and image tag to the animalDiv
+            bodyDiv.append(p);
+            bodyDiv.append(bodyImage);
+
+            // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
+            $("#gifs-appear-here").prepend(bodyDiv);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
