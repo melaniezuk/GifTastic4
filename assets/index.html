@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <title>GifTastic, part deux</title>
 <link rel="stylesheet" type="text/css" href="css/style.css">
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">--><script src="javascript/gif.js"></script> 
 <style type="text/css">
   button,
   div,
@@ -107,104 +107,6 @@
 </html>
 
 
-
-
-
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <title>GifTastic, part deux</title>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <style type="text/css">
-    button,
-    div,
-    form,
-    input {
-      margin: 10px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="container">
-    <div id="buttons-view"></div>
-    <div id="gif-view"></div>  <!-- Gifs will get dumped here -->
-    
-    <!--<form id="gif-form">
-      <label for="gif-input">Add a Body Part</label>
-      <input type="text" id="gif-input"><br>        
-      <input id="add-body" type="submit" value="Add a Body Part">  <!-- Button triggers new gif to be added 
-    </form>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      
-    var body = ["Head", "Eyes", "Chest", "Mouth", "Nose", "Arms", "Hands", "Fingers", "Heart", "Lungs", "Stomach", "Liver", "Belly Button", "Legs", "Bones", "Arteries", "Vessels", "Knees", "Feet", "Ankles"];
-
-    function renderButtons() {
-          $("#body-view").empty();
-          for (var i = 0; i < body.length; i++){
-              var a = $("<button>");
-              a.addClass ("bodyGif");
-              a.attr ("data-name", body [i]);
-              a.text(body[i]);
-              $("#gif-view").append(a);
-            }
-     }
-
-    $("#add-body").on("click", function(event) {      // This function handles events where one button is clicked
-        event.preventDefault();        // event.preventDefault() prevents the form from trying to submit itself.// We're using a form so that the user can hit enter instead of clicking the button if they want
-        var bodies = $("#gif-input").val().trim();      // This line will grab the text from the input box
-        body.push(bodies);         // The movie from the textbox is then added to our array
-        renderButtons();         // calling renderButtons which handles the processing of our movie array
-    });
-      
-    renderButtons();        // Calling the renderButtons function at least once to display the initial list of movies
-
-    function buttonDisplay (){
-        $('body').on('click', '.bodyGif', function(){
-            var buttonVal = $(this).text();
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonVal + "&api_key=dc6zaTOxFJmzC&limit=10";
-              console.log(queryURL);
-            $.ajax({
-                url: queryURL, 
-                method: "GET" 
-            }).then(function(response){
-              // debugger;  
-                console.log('the response is', response.data);
-                // response.data is an array of 10 GIFs
-                // we want to loop through this array and for each item in the array, create an <img src="sourceurl">
-
-                //loop through response.data array
-                for(var i=0; i < response.data.length; i++){
-                    var gifImage = $("<img>");  
-                    //var rating = $("<h5>").text("Rating: " + results[i].rating).addClass('rating');
- 
-
-                    //give each image a src attribute, equal to the url property of the item we are currently looping on
-                    gifImage.attr('src', response.data[i].images.fixed_height.url);
-                    $('#gif-view').append(gifImage);
-                    //append to gif div
-                }   
-
-
-                //renderButtons();
-            });
-            })
-            
-        }
-        buttonDisplay();
-        
-    </script>
-  </div>
-</body>
-
-</html>
 
 
 
